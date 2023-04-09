@@ -1,5 +1,7 @@
 #bölüm1
-![Screenshot_20230409_020933](https://user-images.githubusercontent.com/118223063/230751143-f6620bc4-de10-4aec-84be-5e3482bcc97e.jpg)
+
+![aaaa](https://user-images.githubusercontent.com/118223063/230751212-b6f4b45b-ce26-4737-9d7c-4beca1e2c73d.png)
+
 https://www.youtube.com/shorts/_8_5m3pBR9s
 
 
