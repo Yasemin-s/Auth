@@ -1,19 +1,87 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth1/components/my_button.dart';
 import 'package:flutter_auth1/components/my_textfield.dart';
 import 'package:flutter_auth1/components/square_tile.dart';
 
-class LoginPage extends StatelessWidget{
+class LoginPage extends StatefulWidget{ //ctrl + . ile statefull a donusturduk
   LoginPage({super.key});
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   //metin kontrolu
-  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
 
   //kullanici giris butonu icin metod
-  void signUserIn(){
+  void signUserIn() async{
 
+    // yukleniyor kismi
+    showDialog(context: context, 
+    builder: (context){
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    } ,
+    );
+
+
+    //tekrar girisi dene kismi
+
+
+ try{ //email yanlis olma durumu
+     await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailController.text, 
+      password: passwordController.text,
+      );
+       //yukeleniyor kismi dudurma
+        Navigator.pop(context);
+ } 
+ 
+ on FirebaseAuthException catch(e){ //hata varsa yakalayalim
+ //yukeleniyor kismi dudurma
+    Navigator.pop(context);
+ //email yanlis
+  if(e.code == "user-not-found"){
+    //print("emaile ait kullanıcı adı bulunamadı.");
+    wrongEmailMessage();
   }
+  //sifre yanlis
+  else if(e.code == "wrong-password"){
+    //print("şifre yanlış");
+    wrongPasswordMessage();
+  }
+   }
+   
+  }
+  //email hataliysa giris sayfasina don
+  void wrongEmailMessage(){
+    showDialog(
+      context: context,
+      builder: (context){
+        return AlertDialog(
+          title: Text("Yanlış email"),);
+      });
+  }
+
+  //sifre  hataliysa giris sayfasina don
+  void wrongPasswordMessage(){
+    showDialog(
+      context: context,
+      builder: (context){
+        return AlertDialog(
+          title: Text("Yanlış şifre"),);
+      });
+  }
+
+
+
+   
+
 
   @override
   Widget build(BuildContext context){
@@ -45,10 +113,10 @@ class LoginPage extends StatelessWidget{
            const SizedBox(height: 25,),
 
 
-            //kullanici adi girisi
+            //email girisi
             MyTextField(
-              controller: usernameController,
-              hintText: "Kulanıcı adı",
+              controller: emailController,
+              hintText: "Email",
               obscureText: false,
             ),
 
