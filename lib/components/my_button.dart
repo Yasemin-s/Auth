@@ -4,10 +4,12 @@ import "package:flutter/material.dart";
 class MyButton extends StatelessWidget {
 
   final Function()? onTap;
+  final String text;  //kayit ol butonu icin
 
   const MyButton({
     super.key,
-    required this.onTap
+    required this.onTap,
+    required this.text,
     });
 
   @override
@@ -18,12 +20,13 @@ class MyButton extends StatelessWidget {
         padding: const EdgeInsets.all(25),
         margin: const EdgeInsets.symmetric(horizontal: 25),
         decoration: BoxDecoration(
-          color: Colors.white70,
+          color: Colors.black,
           borderRadius: BorderRadius.circular(25)
         ),
-        child: const Center(
-          child:  Text("Giriş yap",
-          style: TextStyle(
+        child: Center(
+          child:  Text(
+          text,
+          style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 16

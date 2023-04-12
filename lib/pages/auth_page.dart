@@ -2,7 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth1/pages/home_page.dart';
-import 'package:flutter_auth1/pages/login_page.dart';
+import 'package:flutter_auth1/pages/login_or_register_page.dart';
+//import 'package:flutter_auth1/pages/login_page.dart';
 
 //kullanicinin oturum acip acmadigini kontrol edecegiz
 class AuthPage extends StatelessWidget {
@@ -22,7 +23,7 @@ class AuthPage extends StatelessWidget {
 
           //kullanici giris yapmamissa
           else{
-            return LoginPage(); //oturum acmasi icin, oturum acma sayfasina yonlendirdik.
+            return LoginOrRegisterPage(); //oturum acmasi icin, oturum acma sayfasina yonlendirdik.
           }
 
         },

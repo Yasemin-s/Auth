@@ -4,24 +4,24 @@ import 'package:flutter_auth1/components/my_button.dart';
 import 'package:flutter_auth1/components/my_textfield.dart';
 import 'package:flutter_auth1/components/square_tile.dart';
 
-class LoginPage extends StatefulWidget{ //ctrl + . ile statefull a donusturduk
+class RegisterPage extends StatefulWidget{ //ctrl + . ile statefull a donusturduk
 
   final Function()? onTap;  //uye ol kismina link verebilmek iicn
 
-  LoginPage({super.key, required this.onTap});
+  RegisterPage({super.key, required this.onTap});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   //metin kontrolu
   final emailController = TextEditingController();
-
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
   //kullanici giris butonu icin metod
-  void signUserIn() async{
+  void signUserUp() async{
 
     // yukleniyor kismi
     showDialog(context: context, 
@@ -33,27 +33,32 @@ class _LoginPageState extends State<LoginPage> {
     );
 
 
-    //tekrar girisi dene kismi
+    // girisi kaydet
+    try{ //email yanlis olma durumu
+       if(passwordController.text == confirmPasswordController.text){
+         await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text, 
+          password: passwordController.text,
+          );
+       }
+       else{
+        //hata mesaji , parola eslesmedi
+        showErrorMessage("Şifre eşleşmedi!");
+       }
 
-
- try{ //email yanlis olma durumu
-     await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: emailController.text, 
-      password: passwordController.text,
-      );
-       //yukeleniyor kismi dudurma
-        Navigator.pop(context);
- } 
- 
- on FirebaseAuthException catch(e){ //hata varsa yakalayalim
- //yukeleniyor kismi dudurma
-    Navigator.pop(context);
- 
-    //hata mesaji
-    showErrorMessage(e.code);
-   }
-   
-  }
+          //yukeleniyor kismi dudurma
+            Navigator.pop(context);
+        } 
+        
+        on FirebaseAuthException catch(e){ //hata varsa yakalayalim
+        //yukeleniyor kismi dudurma
+            Navigator.pop(context);
+        
+            //hata mesaji
+            showErrorMessage(e.code);
+        }
+      
+      }
   //hata mesaji
   void showErrorMessage(String message){
     showDialog(
@@ -86,18 +91,18 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               //mainAxisAlignment: MainAxisAlignment.center,
             children: [
-             const SizedBox(height: 50,), //final da, derleme ve calisma zamanindan sonra degerler bilinecek. const da ise derleme zamaninda olusturulacak.
+             const SizedBox(height: 25,), //final da, derleme ve calisma zamanindan sonra degerler bilinecek. const da ise derleme zamaninda olusturulacak.
           
              const Icon(
                 Icons.lock,
-                size: 100,),
+                size: 50,),
           
              const SizedBox(height: 50,),
           
           
           
-              //karsilama girisi
-              Text("Tekrar Hoş Geldiniz",
+              //karsilama girisi -kayitli hesaba  giris
+              Text("Kayıt Ol",
                 style: TextStyle(
                   color: Colors.grey[700],
                   fontSize: 16,
@@ -124,26 +129,19 @@ class _LoginPageState extends State<LoginPage> {
               ),
           
               const SizedBox(height: 25,),
-              //sifremi unuttum
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text("Şifremi unuttum?",
-                      style: TextStyle(
-                      color: Colors.grey[600],
-                      ),
-                    ),
-                  ],
-                ),
+
+             //sifreyi onaylama kismi
+              MyTextField(
+                controller: confirmPasswordController,
+                hintText: "Şifreyi tekrar giriniz",
+                obscureText: true,
               ),
           
-              //giris yap butonu
+              //kayit ol butonu
               const SizedBox(height: 25,),
               MyButton(
-                text: "Giriş Yap",
-               onTap: signUserIn,
+                text: "Kayıt Ol",
+               onTap: signUserUp,
               ),
           
               const SizedBox(height: 50,),
@@ -201,14 +199,14 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Üye değil misiniz?",
+                  Text("Hesabınız mı var?",
                   style: TextStyle(
                     color: Colors.grey[200],
                   ),),
                   const SizedBox(width: 4,),
-                  GestureDetector(  //hareketlendirmek icin, tiklama ozelligi iciin
+                  GestureDetector(  //hareketlendirmek icin
                     onTap: widget.onTap,
-                    child: const Text("Üye ol",
+                    child: const Text("Oturum açın",
                       style: TextStyle(
                         color: Colors.blue,
                         fontWeight: FontWeight.bold
