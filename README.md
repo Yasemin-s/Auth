@@ -25,4 +25,8 @@ https://www.youtube.com/shorts/_8_5m3pBR9s
 
 #bölüm2
 https://youtube.com/shorts/DeKUCfh0LHc
->>>>>>> cf8cb05f8e1a0505df1b30ff1af301efff843f52
+
+
+#bölüm3
+
+https://youtube.com/shorts/-n9vuCxMmPo
